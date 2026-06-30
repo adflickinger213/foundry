@@ -1,4 +1,5 @@
 import js from "@eslint/js";
+import globals from "globals";
 import tseslint from "@typescript-eslint/eslint-plugin";
 import tsParser from "@typescript-eslint/parser";
 import reactHooks from "eslint-plugin-react-hooks";
@@ -15,6 +16,7 @@ export default [
         sourceType: "module",
         ecmaFeatures: { jsx: true },
       },
+      globals: { ...globals.browser },
     },
     plugins: {
       "@typescript-eslint": tseslint,
@@ -33,6 +35,13 @@ export default [
         { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
       ],
       "no-console": ["warn", { allow: ["warn", "error"] }],
+    },
+  },
+  {
+    // Build-time config files run in Node, not the browser.
+    files: ["*.config.{ts,js}", "vite.config.ts"],
+    languageOptions: {
+      globals: { ...globals.node },
     },
   },
   {
