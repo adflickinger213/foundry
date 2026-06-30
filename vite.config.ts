@@ -1,11 +1,11 @@
-import { defineConfig } from "vite";
+import { defineConfig, type UserConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "node:path";
 
 // Tauri expects a fixed dev server port and a relative base so the
 // production build can be loaded from the local filesystem inside the
 // webview. See: https://v2.tauri.app/start/frontend/vite/
-export default defineConfig(() => ({
+export default defineConfig((): UserConfig => ({
   plugins: [react()],
   resolve: {
     alias: {

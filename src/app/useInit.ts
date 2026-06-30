@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { seedChaptersIfEmpty } from "@/lib/db";
+import { seedChaptersIfEmpty, getChapters } from "@/lib/db";
 import { queryClient } from "./queryClient";
 
 type Status = "loading" | "ready" | "error";
@@ -24,8 +24,7 @@ export function useInit(): { status: Status; error: string | null } {
         // Pre-warm the chapters cache so the HQ view renders in one pass.
         await queryClient.prefetchQuery({
           queryKey: ["chapters"],
-          queryFn: () =>
-            import("@/lib/db").then((m) => m.getChapters()),
+          queryFn: () => getChapters(),
         });
 
         if (!cancelled) setStatus("ready");

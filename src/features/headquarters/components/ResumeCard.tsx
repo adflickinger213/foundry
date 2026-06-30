@@ -1,6 +1,5 @@
 import { BookOpen } from "lucide-react";
 import { motion } from "framer-motion";
-import { Card } from "@/components/ui/Card";
 import type { Chapter } from "@/types/chapter";
 
 interface ResumeCardProps {
