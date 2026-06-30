@@ -1,0 +1,24 @@
+[package]
+name = "foundry-hq"
+version = "1.0.0"
+description = "The Foundry HQ — a desktop home for the Foundry Design Bible."
+authors = ["Lexy"]
+edition = "2021"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+tauri-plugin-sql = { version = "2", features = ["sqlite"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+[profile.release]
+# Smaller, faster binary for a personal desktop app — see README for why
+# Tauri was chosen over Electron for this rebuild.
+panic = "abort"
+codegen-units = 1
+lto = true
+opt-level = "s"
+strip = true

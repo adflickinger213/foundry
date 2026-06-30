@@ -1,0 +1,97 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  Self-hosted fonts. See src/assets/fonts/README.md — this app runs fully
+  offline, so no CDN link, just local files referenced by relative path.
+  Until those files are dropped in, the `local()` + system fallback in the
+  Tailwind font stack keeps things looking reasonable.
+*/
+@font-face {
+  font-family: "Cormorant Garamond";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../assets/fonts/cormorant-garamond-500.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Cormorant Garamond";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../assets/fonts/cormorant-garamond-600.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Cormorant Garamond";
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../assets/fonts/cormorant-garamond-500-italic.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../assets/fonts/inter-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../assets/fonts/inter-500.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../assets/fonts/inter-600.woff2") format("woff2");
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html, body, #root {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-ivory text-ink font-sans antialiased;
+    background: linear-gradient(160deg, #faf7f2, #ede0d0);
+  }
+
+  /* Visible, gentle focus rings everywhere — accessibility floor, not an
+     afterthought. Cottagecore doesn't mean invisible focus states. */
+  :focus-visible {
+    @apply outline-none ring-2 ring-terracotta/60 ring-offset-2 ring-offset-ivory rounded-xl;
+  }
+
+  ::selection {
+    background: rgba(196, 120, 90, 0.18);
+  }
+
+  /* Respect reduced-motion preferences app-wide, on top of the per-component
+     motion-safe checks in Framer Motion usage. */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+@layer utilities {
+  .scrollbar-soft::-webkit-scrollbar {
+    width: 8px;
+  }
+  .scrollbar-soft::-webkit-scrollbar-thumb {
+    background: #e7dccb;
+    border-radius: 8px;
+  }
+}
