@@ -1,28 +1,27 @@
-# Fonts go here (one-time setup)
+# Fonts (vendored)
 
-This sandbox can't reach Google's font CDN, so the two font families used by
-the app aren't bundled in this drop. The app is built to run fully offline,
-so the right move is to self-host them rather than link a CDN at runtime.
+These two families are self-hosted so the app runs fully offline — no CDN link
+at runtime. The `@font-face` rules in `src/styles/globals.css` point at these
+exact filenames.
 
-Grab these once, from a machine with normal internet access:
+| Family | Weights | Files |
+|---|---|---|
+| Cormorant Garamond | 500, 600, italic 500 | `cormorant-garamond-{500,600,500-italic}.woff2` |
+| Inter | 400, 500, 600 | `inter-{400,500,600}.woff2` |
 
-1. **Cormorant Garamond** — weights 500, 600, italic 500 — https://fonts.google.com/specimen/Cormorant+Garamond
-2. **Inter** — weights 400, 500, 600 — https://fonts.google.com/specimen/Inter
+Both are licensed under the SIL Open Font License 1.1 (see `Cormorant-Garamond-OFL.txt`
+and `Inter-OFL.txt`). The `.woff2` files are the `latin` subset.
 
-Easiest path: use https://google-webfonts-helper.herokuapp.com (or the
-`gwfh` CLI) to download `.woff2` files for exactly those weights, then drop
-them in this folder as:
+## Refreshing / changing weights
 
+The files were extracted from the `@fontsource/cormorant-garamond` and
+`@fontsource/inter` npm packages. To regenerate or add a weight:
+
+```bash
+npm install --no-save @fontsource/cormorant-garamond @fontsource/inter
+# copy node_modules/@fontsource/<family>/files/<family>-latin-<weight>-<style>.woff2
+# into this folder, renamed to match the @font-face rules in globals.css
 ```
-src/assets/fonts/
-  cormorant-garamond-500.woff2
-  cormorant-garamond-600.woff2
-  cormorant-garamond-500-italic.woff2
-  inter-400.woff2
-  inter-500.woff2
-  inter-600.woff2
-```
 
-The `@font-face` rules in `src/styles/globals.css` already point at these
-exact filenames — nothing else to wire up. Until the files are added, the
-app falls back to the system serif/sans stack, so it still looks reasonable.
+(Google Fonts directly, or https://gwfh.mranftl.com, are equivalent sources if
+you have unrestricted internet access.)
