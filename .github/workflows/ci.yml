@@ -15,7 +15,7 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: .nvmrc
           cache: npm
 
       - name: Install dependencies
@@ -27,3 +27,51 @@ jobs:
       # `npm run build` runs `tsc -b` (strict) then `vite build`.
       - name: Type-check & build
         run: npm run build
+
+  native:
+    name: Build (Rust / Tauri shell)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      # The GTK/WebKit stack the Tauri shell links against (the exact libs
+      # that block `tauri dev` on a bare Linux box).
+      - name: Install Tauri system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev \
+            libgtk-3-dev \
+            libayatana-appindicator3-dev \
+            librsvg2-dev \
+            libxdo-dev \
+            libssl-dev \
+            build-essential \
+            curl wget file
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Rust build
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+
+      - name: Install JS dependencies
+        run: npm ci
+
+      # generate_context! embeds the built frontend, so dist/ must exist
+      # before the Rust shell compiles.
+      - name: Build frontend
+        run: npm run build
+
+      # Debug compile of the Tauri shell — validates the native build and
+      # WebKit linkage without the slow release LTO profile or bundling.
+      - name: Compile Tauri shell
+        run: cargo build --manifest-path src-tauri/Cargo.toml

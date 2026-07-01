@@ -4,6 +4,9 @@
   "description": "The Foundry HQ — a desktop home for The Foundry Design Bible.",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
